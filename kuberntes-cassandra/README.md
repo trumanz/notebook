@@ -70,6 +70,90 @@ Kubernetes提供了API 去查询每一个某个service 下所有POD的IP地址�
 
 ##Kuberntes yaml 解析
 
+1. ReplicationController 是一个比较虚的东西，它用来保证POD的replica个数。
+2. POD  一个POD包含一或多个container，其中的container共享volume 和 网络空间。
+3. Container  docker container， 一个运行实例
+4. Service 定义了到达cluster的哪些端口和转发到哪些POD中的规范。
+
+
+
+###ReplicationController
+这里以[cassandra_rc.yaml](https://github.com/trumanz/dockerBuild/blob/v1.0/datastax-enterprise/kubernetes/yaml/cassandra_rc.yaml)来分析
+####container 定义
+```
+    spec:
+      containers:
+        - command:
+            - /run-cassandra.sh
+          resources:
+            limits:
+              cpu: 0.1
+          image: trumanz/dse4kube
+```
+这里定义了相关的POD中有一个container（可以有多个），并定义了image 和启动命令
+####网络
+```
+          ports:
+            - containerPort: 9042
+              name: cql
+            - containerPort: 9160
+              name: thrift
+```
+这里定义了两个port，其name要与后面service 中的相应name对应。
+####存储
+```
+          volumeMounts:
+            - mountPath: /var/lib/cassandra/
+              name: data
+            - mountPath: /var/log/cassandra/
+              name: log
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: log
+          emptyDir: {}
+
+```
+
+这里使用了类型为emptyDir的volume 作为挂载点，对于每一个POD， kubernetes 会创建两个新空目录，container 启动会挂在这两个目录到对应的 mountPath。
+####service 关系
+service 会关联
+```
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: dse-cassandra
+
+```
+这里我们的POD打了lable  service=dse， 后面创建service 的时候会用到， 也就是说 servcie 跟ReplicationController 并没与关系，而是要关联到某些POD。
+
+
+###Service
+这里以[dse-service.yaml](https://github.com/trumanz/dockerBuild/blob/v1.0/datastax-enterprise/kubernetes/yaml/dse-service.yaml) 作为示例
+
+####网络
+```
+spec:
+  ports:
+    - name: cql
+      port: 9042
+      nodePort: 30010
+    - name: solr
+      port: 8983
+      nodePort: 30011
+```
+
+Servcie 一个比较大的功能就是管理网络，
+这里定义的port，表示使用分配到的cluster IP 的9042 和 8983分别转到到POD对应名称为solr和cql 中，所以这里port 数值可以自由定义，不一定必须跟POD中相同，但name必须相同。
+nodePort 是将service 暴露到 cluster外部的一种方式，这样访问任何 kubernetes 的node ip 的 300010 就会转发到对应的POD中。 这里的 nodePort 必须为 30000 以上一个一部分端口，因为这些port 资源是所有service 共享的。
+####POD关联
+```
+  selector:
+    service: dse
+```
+这样servcie 的定义，定义了selector 为servcie=dse， 这样就能关联到相应的POD， 
 
 
 
