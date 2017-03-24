@@ -1,3 +1,5 @@
 # blog
 
-## this is test
+
+ bundle exec jekyll serve -H 0.0.0.0
+
