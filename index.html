@@ -2,11 +2,11 @@
 layout: bloglayout
 title: Truman Zhou's Blog
 ---
-<ul class="posts">
+<ul class="blogs">
 
   {% for post in site.posts %}
     <li>
-       <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+       <a href="/blog/{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
     </li>
   {% endfor %}
     

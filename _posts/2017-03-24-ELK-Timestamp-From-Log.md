@@ -4,4 +4,4 @@ title: "ELK Timestamp From Log"
 date: 2017-03-24
 ---
 
-ELK Timetamp
+ELK Timetamp content
