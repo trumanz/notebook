@@ -4,9 +4,6 @@ layout: rawdata
 {% for collection in site.collections  %}
 lable: {{ collection.label }} 
     {% for file in collection.files %}
-files: {{ file.path }} 
+file: {{ file.path }} 
     {% endfor %}
 {% endfor %}
-
-
-

@@ -9,7 +9,14 @@
     $(document).ready(function(){
 	      console.log("docuemtn ready function execute")
 		  $.get("manifest/all_collections.html", function(data){
-		        console.log("got data: =============\n" + data + "\n=============\n")
+				
+		  
+		        console.log("got data: =============\n" + data + "\n=============\n");
+				var arrayOfLines = data.match(/[^\r\n]+/g);
+				for(var line in arrayOfLines) {
+								document.getElementById("content").innerHTML +='<h3>' + arrayOfLines[line] + '<h3>';
+								console.log("got line: =============\n" + arrayOfLines[line] + "\n=============\n");
+				}
 		  });
 	});
   
@@ -20,7 +27,8 @@
 
 <body>
 
-<h2> This is title </h2>
+<h2> Got all blog md file list! </h2>
+<div id ="content"> </div>
 
 </body>
 </html>
