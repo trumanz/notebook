@@ -1,13 +1,26 @@
----
-layout: bloglayout
-title: Truman Zhou's Blog
----
-<ul class="blogs">
+<!DOCTYPE html>
+<head>
 
-  {% for post in site.posts %}
-    <li>
-       <a href="/blog/{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-    </li>
-  {% endfor %}
-    
-</ul>
+
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  
+  <script>
+  
+    $(document).ready(function(){
+	      console.log("docuemtn ready function execute")
+		  $.get("manifest/blog_list.html", function(data){
+		        console.log("got data: =============\n" + data + "\n=============\n")
+		  });
+	});
+  
+  </script>
+  
+
+</head>
+
+<body>
+
+<h2> This is title </h2>
+
+</body>
+</html>

@@ -1,2 +1,7 @@
 theme: jekyll-theme-dinky
-permalink: /:year/:month/:day/:title
+permalink: /blog_/:year/:month/:day/:title
+
+collections:
+  blog_collection:
+    output: true
+#    permalink: /awesome/:path/:title.:output_ext
