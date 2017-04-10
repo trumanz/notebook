@@ -1,34 +1,63 @@
-<!DOCTYPE html>
+<html>
 <head>
-
-
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-  
-  <script>
-  
+ <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://cdn.rawgit.com/showdownjs/showdown/1.6.4/dist/showdown.min.js"> </script>
+<link rel="stylesheet" href="https://getbootstrap.com/examples/dashboard/dashboard.css">
+<script type= "text/javascript" src="js/api.js"></script>
+<script type= "text/javascript" src="js/cors.js"></script>
+<script>
     $(document).ready(function(){
 	      console.log("docuemtn ready function execute")
-		  $.get("manifest/all_collections.html", function(data){
-				
-		  
-		        console.log("got data: =============\n" + data + "\n=============\n");
-				var arrayOfLines = data.match(/[^\r\n]+/g);
-				for(var line in arrayOfLines) {
-								document.getElementById("content").innerHTML +='<h3>' + arrayOfLines[line] + '<h3>';
-								console.log("got line: =============\n" + arrayOfLines[line] + "\n=============\n");
+		  makeCorsRequest("https://trumanz.github.io/blog/manifest/all_collections.html", function(data){
+		  		        console.log("got data: =============\n" + data + "\n=============\n");
+		        var blogs = covert_collections_to_json(data);
+				for(i in blogs){
+				    name = blogs[i]["name"];
+					href = blogs[i]["href"];
+				   $("#nav-menu ul").append('<li><a href="' +  href + '">' + name + '</a></li>');
 				}
-		  });
+				$("#nav-menu ul li").click(function(event){
+				    event.preventDefault();
+					var href = $(this).find("a").attr("href");
+					$("#nav-menu ul li").toggleClass("active", false);
+					$(this).toggleClass("active", true);
+					
+					$.get(href, function(data){
+					     console.log(data);
+						 var converter = new showdown.Converter();
+					     x = converter.makeHtml(data);
+						 $("#blog_content").empty();
+						 $("#blog_content").append(x);
+					});					
+				});
+				
+ 		  }, function(){console.log("error")});
 	});
   
   </script>
-  
+ </head> 
+ 
+ <body data-gr-c-s-loaded="true">
 
-</head>
+<div class ="container-fluid"> 
+	<div class="row">
+		<div class="col-sm-3 col-md-2 sidebar" id="nav-menu">
+			<ul class="nav nav-sidebar" ></ul>
+		</div>
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" >
+		<h1 class="page-header"> Truman Zhou's Blog</h1>
+		<div id="blog_content"></div>
+		</div>
+	</div>
+</div>
 
-<body>
-
-<h2> Got all blog md file list! </h2>
-<div id ="content"> </div>
-
-</body>
 </html>
