@@ -3,19 +3,13 @@
 
 
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-   <script src="js/api.js"></script>
-    <script src="js/cors.js"></script>
+  
   <script>
   
     $(document).ready(function(){
-	      console.log("docuemtn ready function execute");
-		  makeCorsRequest("https://trumanz.github.io/blog/manifest/all_collections.html", function(data){
-		       console.log(data)
-		  }, 
-		  function(){});
-		  $.get("https://github.com/trumanz/blog/tree/master/_blog_collection", function(data){
-				var json_data = covert_collections_to_json(data);
-				console.log(json_data);
+	      console.log("docuemtn ready function execute")
+		  $.get("manifest/all_collections.html", function(data){
+				
 		  
 		        console.log("got data: =============\n" + data + "\n=============\n");
 				var arrayOfLines = data.match(/[^\r\n]+/g);
