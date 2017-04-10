@@ -18,14 +18,13 @@
     $(document).ready(function(){
 	      console.log("docuemtn ready function execute")
 		  makeCorsRequest("https://trumanz.github.io/blog/manifest/all_collections.html", function(data){
-		  		        console.log("got data: =============\n" + data + "\n=============\n");
 		        var blogs = covert_collections_to_json(data);
 				for(i in blogs){
-				    name = blogs[i]["name"];
-					href = blogs[i]["href"];
-					if(window.location.href.indexOf("github.io") > 0 && href[0] == '_'){
-					    href= href.substr(1);
-					}
+				    var name = blogs[i]["name"];
+					var href = blogs[i]["href"];
+ 					if(window.location.href.indexOf("trumanz.github.io") > 0 && href.charAt(1) == '_'){
+					    href= href.substr(2);
+ 					}
 				   $("#nav-menu ul").append('<li><a href="' +  href + '">' + name + '</a></li>');
 				}
 				$("#nav-menu ul li").click(function(event){
@@ -35,7 +34,7 @@
 					$(this).toggleClass("active", true);
 					
 					$.get(href, function(data){
-					     console.log(data);
+					     //console.log(data);
 						 var converter = new showdown.Converter();
 					     x = converter.makeHtml(data);
 						 $("#blog_content").empty();
