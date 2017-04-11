@@ -1,5 +1,3 @@
-# blog
+#Truman Zhou's blog raw data
 
-
- bundle exec jekyll serve -H 0.0.0.0
-
+https://trumanz.github.io/blog/
