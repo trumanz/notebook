@@ -16,16 +16,17 @@
 <script type= "text/javascript" src="js/cors.js"></script>
 <script>
     $(document).ready(function(){
-	      console.log("docuemtn ready function execute")
-		  makeCorsRequest("https://api.github.com/search/code?q=filename:md+repo:trumanz/blog", function(data){
+	      console.log("docuemtn ready function execute");
+		  var gitrepo = "trumanz/blog";
+		  makeCorsRequest("https://api.github.com/search/code?q=filename:md+repo:" + gitrepo, function(data){
 		         md_files = JSON.parse(data);
 				for(i in md_files["items"] ){
 				   var item =  md_files["items"][i];
 				   console.log(item);
 				   var name = item["name"];
 				   name = name.substring(0, name.length - 3);
-				   var href = item["path"];
-				   if(href != "README.md"){
+ 				   if(item["path"] != "README.md"){
+				      href = item["url"]
 					  $("#nav-menu ul").append('<li><a href="' +  href + '">' + name + '</a></li>');
 				   }
 				}
@@ -34,13 +35,20 @@
 					var href = $(this).find("a").attr("href");
 					$("#nav-menu ul li").toggleClass("active", false);
 					$(this).toggleClass("active", true);
-					
-					$.get(href, function(data){
-					     //console.log(data);
-						 var converter = new showdown.Converter();
+					makeCorsRequest(href, function(data){
+					    file = JSON.parse(data);
+						file_raw_url = file["download_url"];
+					    makeCorsRequest(file_raw_url, function(data){
+					     var converter = new showdown.Converter();
 					     x = converter.makeHtml(data);
 						 $("#blog_content").empty();
 						 $("#blog_content").append(x);
+					    
+					}, function(){console.log("error");});
+					}, function(){console.log("error");});
+					$.get(href, function(data){
+					     //console.log(data);
+						
 					});					
 				});
 				
