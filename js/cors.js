@@ -22,7 +22,7 @@ function getTitle(text) {
 }
 
 // Make the actual CORS request.
-function makeCorsRequest(url, onload, onerror) {
+function makeCorsRequest(url, onload) {
   
   var xhr = createCORSRequest('GET', url);
   if (!xhr) {
@@ -38,7 +38,7 @@ function makeCorsRequest(url, onload, onerror) {
 //    alert('Response from CORS request to ' + url + ': ' + title);
   };
 
-  xhr.onerror = onerror;
+  xhr.onerror = function(){"error"};
 
   xhr.send();
 }
