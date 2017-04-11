@@ -14,8 +14,10 @@ function genereate_blogs(github_repo, div){
 	
 	div.append(fluid_div);
 	
+	var oauth = "client_id=c45417c5d6249959a91d&client_secret=3630a057d4ebbbdbfc84f855376f3f46f58b9710";
+	
 	//get all md file
-	makeCorsRequest("https://api.github.com/search/code?q=filename:md+repo:" + github_repo, function(data){
+	makeCorsRequest("https://api.github.com/search/code?&q=filename:md+repo:" + github_repo + "&" + oauth, function(data){
 		md_files = JSON.parse(data);
 		//crate the sidebar
 		for(i in md_files["items"] )
@@ -30,6 +32,9 @@ function genereate_blogs(github_repo, div){
 			}
 		}
 		
+		
+		
+		
 		//when the menu of sidebar clicked
 		$("#nav-menu ul li").click(function(event){
 			event.preventDefault();
@@ -37,12 +42,12 @@ function genereate_blogs(github_repo, div){
 			$("#nav-menu ul li").toggleClass("active", false);
 			$(this).toggleClass("active", true);
 			//get the file matedata
-			makeCorsRequest(href, 
+			makeCorsRequest(href + "&" + oauth, 
 				function(data){
 					file = JSON.parse(data);
 					file_raw_url = file["download_url"];
 					//download the raw data
-					makeCorsRequest(file_raw_url, 
+					makeCorsRequest(file_raw_url + "?" + oauth, 
 						function(data){
 							var converter = new showdown.Converter();
 							x = converter.makeHtml(data);
