@@ -2,6 +2,7 @@
 function covert_collections_to_json(collections_str)
 {
 	
+	
 	var collections = collections_str.split("lable: ");
 	//console.log(collections);
 	var blog_collection = null;

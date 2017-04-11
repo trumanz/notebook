@@ -17,15 +17,17 @@
 <script>
     $(document).ready(function(){
 	      console.log("docuemtn ready function execute")
-		  makeCorsRequest("https://trumanz.github.io/blog/manifest/all_collections.html", function(data){
-		        var blogs = covert_collections_to_json(data);
-				for(i in blogs){
-				    var name = blogs[i]["name"];
-					var href = blogs[i]["href"];
- 					if(window.location.href.indexOf("trumanz.github.io") > 0 && href.charAt(1) == '_'){
-					    href= href.substr(2);
- 					}
-				   $("#nav-menu ul").append('<li><a href="' +  href + '">' + name + '</a></li>');
+		  makeCorsRequest("https://api.github.com/search/code?q=filename:md+repo:trumanz/blog", function(data){
+		         md_files = JSON.parse(data);
+				for(i in md_files["items"] ){
+				   var item =  md_files["items"][i];
+				   console.log(item);
+				   var name = item["name"];
+				   name = name.substring(0, name.length - 3);
+				   var href = item["path"];
+				   if(href != "README.md"){
+					  $("#nav-menu ul").append('<li><a href="' +  href + '">' + name + '</a></li>');
+				   }
 				}
 				$("#nav-menu ul li").click(function(event){
 				    event.preventDefault();
