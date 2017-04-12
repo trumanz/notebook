@@ -34,8 +34,10 @@ function genereate_blogs(github_repo, div){
 				   console.log(commits);
 				   console.log(name);
 				   var last_update_date = commits[0].commit.committer.date
-				   console.log(last_update_date)
-				   $("#blog_content").append('<div class="blog_news"'+ 'last_update="'  + last_update_date +  '">' + name  + " : " + last_update_date + '</div>');
+				   console.log(last_update_date);
+				   var header = '<h2><a href="#">' + name + '</a></h2>';
+				   var post_time = '<p><span class="glyphicon glyphicon-time"></span> Posted on ' + last_update_date +  '</p>';
+				   $("#blog_content").append('<div class="blog_news"'+ 'last_update="'  + last_update_date +  '">' +  header  + post_time + '</div>');
  				   var orderedDivs = $('.blog_news').sort(function(a, b) {
 						var x = new Date(a.getAttribute("last_update"));
 						var y = new Date(b.getAttribute("last_update"));
