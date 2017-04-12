@@ -22,7 +22,7 @@ function getTitle(text) {
 }
 
 // Make the actual CORS request.
-function makeCorsRequest(url, onload) {
+function makeCorsRequest(url, onload, extraInfo) {
   
   var xhr = createCORSRequest('GET', url);
   if (!xhr) {
@@ -32,7 +32,7 @@ function makeCorsRequest(url, onload) {
 
   // Response handlers.
   xhr.onload = function() {
-	onload(xhr.responseText);
+	onload(xhr.responseText, extraInfo);
 //    var text = xhr.responseText;
 //    var title = getTitle(text);
 //    alert('Response from CORS request to ' + url + ': ' + title);

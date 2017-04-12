@@ -1,5 +1,4 @@
 # Saltstack assert System Version
-
 [TOC]
 
 ## Why

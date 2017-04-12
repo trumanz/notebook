@@ -6,7 +6,6 @@ function genereate_blogs(github_repo, div){
 	fluid_div = fluid_div +  '<ul class="nav nav-sidebar" ></ul>'
 	fluid_div = fluid_div +  '</div>'
 	fluid_div = fluid_div +  '<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" >'
-	fluid_div = fluid_div +  '<h1 class="page-header"> Truman Zhou Blog</h1>'
 	fluid_div = fluid_div +  '<div id="blog_content"></div>'
 	fluid_div = fluid_div +  '</div>'
 	fluid_div = fluid_div +  '</div>'
@@ -29,9 +28,25 @@ function genereate_blogs(github_repo, div){
 			if(item["path"] != "README.md"){
 				href = item["url"];
 				$("#nav-menu ul").append('<li><a href="' +  href + '">' + name + '</a></li>');
+			
+			makeCorsRequest("https://api.github.com/repos/" + github_repo + "/commits?" + "path=" + item["path"] + "&" + oauth, function(data, name){
+  				   commits = JSON.parse(data);
+				   console.log(commits);
+				   console.log(name);
+				   var last_update_date = commits[0].commit.committer.date
+				   console.log(last_update_date)
+				   $("#blog_content").append('<div class="blog_news"'+ 'last_update="'  + last_update_date +  '">' + name  + " : " + last_update_date + '</div>');
+ 				   var orderedDivs = $('.blog_news').sort(function(a, b) {
+						var x = new Date(a.getAttribute("last_update"));
+						var y = new Date(b.getAttribute("last_update"));
+						return y-x;
+					});
+					$("#blog_content").empty().append(orderedDivs);
+			}, name);
+			
 			}
+
 		}
-		
 		
 		
 		
