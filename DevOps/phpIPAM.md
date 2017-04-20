@@ -1,13 +1,36 @@
 # phpIPAM on ubuntu 16.04
 [TOC]
 
+##mysql server installation
+###installing package
+```
+$ sudo apt-get update
+$ sudo apt-get install  mysql-server
+```
+###configure remote connecton(optional)
+configure listen address, configuration file "/etc/mysql/mysql.conf.d/mysqld.cnf"
+```
+bind-address            = 0.0.0.0
+```
+restart mysql 
+```
+$ sudo /etc/init.d/mysql restart 
+```
+grant remote connection
+```
+mysql -u root -p
+mysql> GRANT ALL ON *.*  TO 'root'@'%'  IDENTIFIED BY  'YOUR_PASSWORD';
+mysql> FLUSH PRIVILEGES;
+```
 
 ##pdns-serve installation
 #### Installing package
 ```
+$ sudo apt-get update
 $ sudo apt-get install pdns-server  pdns-backend-mysql
 ```
-####Configure mysql backend
+
+####Configure mysql backend (optional, package installation might setup it)
 Init databse
 ```
 $ mysql -u root -p
@@ -22,7 +45,7 @@ $ mysql -updns  -ppdns  pdns  < /usr/share/dbconfig-common/data/pdns-backend-mys
 ##Install phpipam
 ####Install Apache, php and mysql server
 ```
-$ apt-get install  apache2 libapache2-mod-php mysql-server  php  php-gmp php-pear php-mysql php-ldap
+$ apt-get install  apache2 libapache2-mod-php  php  php-gmp php-pear php-mysql php-ldap
 ```
 ####Donwloading phipam
 ```
@@ -40,8 +63,19 @@ $db['host'] = "localhost";
 $db['user'] = "phpipam";
 $db['pass'] = "phpipamadmin";
 $db['name'] = "phpipam";
+
+```
+####configure root directory
+config.php
+```
 define('BASE', "/phpipam/");
 ```
+.htaccess
+```
+RewriteBase /phpipam/
+```
+
+
 ####Configure apache 
 /etc/apache2/sites-enable/000-default.conf
 ```
