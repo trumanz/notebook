@@ -1,13 +1,24 @@
 # Foreman deployment on ubuntu 16.04
 [TOC]
 
-Install puppet
+##configure hosts and hostname
+/etc/hosts;  10.29.98.193 is the ip of this host
+```
+10.29.98.193    foreman03.example.org foreman03
+```
+/etc/hostname
+```
+foreman03
+```
+
+## Install puppet
 ```
 apt-get -y install ca-certificates
 wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
 dpkg -i puppetlabs-release-pc1-xenial.deb
 ```
 
+##install foreman
 Enable foreman repo
 ```
 echo "deb http://deb.theforeman.org/ xenial 1.14" > /etc/apt/sources.list.d/foreman.list
