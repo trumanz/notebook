@@ -12,7 +12,6 @@ $ sudo rescan-scsi-bus
 ##Expand paration
 ```
 $ pvcreate /dev/sdb
-$ lvextend /dev/ubuntu16-template-vg/root  /dev/sdb
 $ vgextend  ubuntu16-template-vg  /dev/sdb
 $ lvextend -L +50G  /dev/ubuntu16-template-vg/root
 $ resize2fs  /dev/ubuntu16-template-vg/root
