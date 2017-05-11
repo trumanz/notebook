@@ -91,8 +91,8 @@ $ /etc/init.d/apache2 restart
 Disable NO_ZERO_DATA of mysql if it enabled it
 ```
 $mysql -u root -p
-mysql> SELECT
-mysql> SET @@GLOBAL.sql_mode=NEW_VALUE_WITHOUT_NO_ZERO_DATE;
+mysql> SELECT @@GLOBAL.sql_mode
+mysql> SET @@GLOBAL.sql_mode="NEW_VALUE_WITHOUT_NO_ZERO_DATE";
 ```
 open http://10.29.98.3/phpipam/  and choose "Automatic database installation"
 
