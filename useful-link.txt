@@ -1,0 +1,4 @@
+http://fffaraz.github.io/awesome-cpp/
+
+https://github.com/kahun/awesome-sysadmin
+
